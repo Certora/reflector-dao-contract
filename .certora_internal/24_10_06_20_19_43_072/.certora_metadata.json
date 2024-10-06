@@ -1,0 +1,36 @@
+{
+    "CLI_package_name": "certora-cli-beta",
+    "CLI_version": "7.17.2",
+    "branch": "gadi/rules_2",
+    "certora_ci_client": null,
+    "conf": {
+        "files": [
+            "contract.wat"
+        ],
+        "loop_iter": "4",
+        "process": "emv",
+        "prover_args": [
+            " -target certora_ballot_id_increasing"
+        ],
+        "prover_version": "cnandi/signeddiv"
+    },
+    "conf_path": null,
+    "cwd_relative": ".",
+    "dirty": true,
+    "group_id": null,
+    "main_spec": null,
+    "origin": "git@github.com:Certora/reflector-dao-contract.git",
+    "python_version": "3.9.6",
+    "raw_args": [
+        "/Users/gadiauerbach/Library/Python/3.9/bin/certoraRun",
+        "contract.wat",
+        "--loop_iter",
+        "4",
+        "--prover_args",
+        "-target certora_ballot_id_increasing",
+        "--prover_version",
+        "cnandi/signeddiv"
+    ],
+    "revision": "23f35b61a82d623088863f7d0c28f4b00e83e68a",
+    "timestamp": "1728224383.399769"
+}
