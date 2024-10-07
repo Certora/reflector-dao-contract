@@ -1,7 +1,0 @@
-Saving last configuration file to .certora_internal/24_10_06_20_19_43_072/run.conf
-running ['java', '-jar', '/Users/gadiauerbach/certora/tools/CVT/build/emv.jar', 'contract.wat', '-b', '4', '-target', 'certora_ballot_id_increasing', '-buildDirectory', '.certora_internal/24_10_06_20_19_43_072']
-Execution of command "java -jar /Users/gadiauerbach/certora/tools/CVT/build/emv.jar contract.wat -b 4 -target certora_ballot_id_increasing -buildDirectory .certora_internal/24_10_06_20_19_43_072" terminated with exitcode 1.
-Syntax error for input symbol "i64" spanning from unknown:57/170(0) to unknown:57/172(3)
-Couldn't repair and continue parse for input symbol "i64" spanning from unknown:57/170(0) to unknown:57/172(3)
-[main] ERROR ALWAYS - Encountered exception Can't recover from previous error(s) while running: contract.wat -b 4 -target certora_ballot_id_increasing -buildDirectory .certora_internal/24_10_06_20_19_43_072
-[main] ERROR ALWAYS - An internal Prover error occurred, please double-check the provided configuration or command-line arguments, and see low-level crash details below:

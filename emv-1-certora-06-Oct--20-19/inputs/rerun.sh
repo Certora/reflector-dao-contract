@@ -1,1 +1,0 @@
-java -jar $CERTORA/emv.jar contract.wat -b 4 -target certora_ballot_id_increasing -buildDirectory .certora_internal/24_10_06_20_19_43_072
