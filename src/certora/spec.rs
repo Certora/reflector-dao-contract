@@ -246,9 +246,9 @@ pub fn certora_invariant_balances_not_negative_retract_ballot(e: Env, claimant: 
     });
 }
 
-// #[rule]
-// pub fn certora_invariant_balances_not_negative_vote(e: Env, claimant: Address, ballot_id: u64, accepted: bool) {
-//     invariant_balances_not_negative(&e, &claimant, || {
-//         DAOContract::vote(e.clone(), ballot_id, accepted);
-//     });
-// }
+#[rule]
+pub fn certora_invariant_balances_not_negative_vote(e: Env, claimant: Address, ballot_id: u64, accepted: bool) {
+    invariant_balances_not_negative(&e, &claimant, || {
+        DAOContract::vote(e.clone(), ballot_id, accepted);
+    });
+}
