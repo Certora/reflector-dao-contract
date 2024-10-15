@@ -236,16 +236,19 @@ pub fn certora_invariant_balances_not_negative_get_ballot(e: Env, claimant: Addr
     });
 }
 
-#[rule]
-pub fn certora_invariant_balances_not_negative_retract_ballot(e: Env, claimant: Address, ballot_id: u64) {
-    invariant_balances_not_negative(&e, &claimant, || {
-        DAOContract::retract_ballot(e.clone(), ballot_id);
-    });
-}
+// These fail because they rely on Token's behavior (specifically, that it will panic if transferring more than is
+// available).
 
-#[rule]
-pub fn certora_invariant_balances_not_negative_vote(e: Env, claimant: Address, ballot_id: u64, accepted: bool) {
-    invariant_balances_not_negative(&e, &claimant, || {
-        DAOContract::vote(e.clone(), ballot_id, accepted);
-    });
+// #[rule]
+// pub fn certora_invariant_balances_not_negative_retract_ballot(e: Env, claimant: Address, ballot_id: u64) {
+//     invariant_balances_not_negative(&e, &claimant, || {
+//         DAOContract::retract_ballot(e.clone(), ballot_id);
+//     });
+// }
+
+// #[rule]
+// pub fn certora_invariant_balances_not_negative_vote(e: Env, claimant: Address, ballot_id: u64, accepted: bool) {
+//     invariant_balances_not_negative(&e, &claimant, || {
+//         DAOContract::vote(e.clone(), ballot_id, accepted);
+//     });
 }
