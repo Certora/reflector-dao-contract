@@ -217,7 +217,6 @@ pub fn certora_invariant_dao_balance_not_negative_set_deposit(e: Env, deposit_pa
 
 #[rule]
 pub fn certora_invariant_available_balance_not_negative_unlock(e: Env, claimant: Address, developer: Address, operators: Vec<Address>) {    
-    require!(operators.len() <= 2, "Limit operators to reduce complexity");
     invariant_available_balance_not_negative(&e, &claimant, || {
         DAOContract::unlock(e.clone(), developer, operators);
     });
@@ -225,7 +224,6 @@ pub fn certora_invariant_available_balance_not_negative_unlock(e: Env, claimant:
 
 #[rule]
 pub fn certora_invariant_dao_balance_not_negative_unlock(e: Env, developer: Address, operators: Vec<Address>) {    
-    require!(operators.len() <= 2, "Limit operators to reduce complexity");
     invariant_dao_balance_not_negative(&e, || {
         DAOContract::unlock(e.clone(), developer, operators);
     });
