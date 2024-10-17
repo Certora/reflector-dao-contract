@@ -175,9 +175,11 @@ pub fn certora_retracted_ballot_was_draft_or_rejected(e: Env, ballot_id: u64) {
 
 fn invariant_available_balance_not_negative<F>(e: &Env, claimant: &Address, f: F) where F: FnOnce() {
     require!(e.get_available_balance(claimant) >= 0, "available balance not negative");
+    require!(e.get_dao_balance() >= 0, "dao balance not negative");
     f();
     assert!(e.get_available_balance(claimant) >= 0);
 }
+
 
 fn invariant_dao_balance_not_negative<F>(e: &Env, f: F) where F: FnOnce() {
     require!(e.get_dao_balance() >= 0, "dao balance not negative");
