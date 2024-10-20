@@ -173,156 +173,80 @@ pub fn certora_retracted_ballot_was_draft_or_rejected(e: Env, ballot_id: u64) {
     assert!(before.status == BallotStatus::Draft || before.status == BallotStatus::Rejected);
 }
 
-fn invariant_available_balance_not_negative<F>(e: &Env, claimant: &Address, f: F) where F: FnOnce() {
+fn invariant_balances_not_negative<F>(e: &Env, claimant: &Address, f: F) where F: FnOnce() {
     require!(e.get_available_balance(claimant) >= 0, "available balance not negative");
     require!(e.get_dao_balance() >= 0, "dao balance not negative");
     f();
     assert!(e.get_available_balance(claimant) >= 0);
-}
-
-
-fn invariant_dao_balance_not_negative<F>(e: &Env, f: F) where F: FnOnce() {
-    require!(e.get_dao_balance() >= 0, "dao balance not negative");
-    f();
     assert!(e.get_dao_balance() >= 0);
 }
 
 #[rule]
-pub fn certora_invariant_available_balance_not_negative_config(e: Env, claimant: Address, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {    
+pub fn certora_invariant_balances_not_negative_config(e: Env, claimant: Address, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {    
     let config = ContractConfig { admin, token, amount, deposit_params, start_date };
-    invariant_available_balance_not_negative(&e, &claimant, || {
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::config(e.clone(), config);
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_config(e: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {    
-    let config = ContractConfig { admin, token, amount, deposit_params, start_date };
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::config(e.clone(), config);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_set_deposit(e: Env, claimant: Address, deposit_params: Map<BallotCategory, i128>) {    
-    invariant_available_balance_not_negative(&e, &claimant, || {
+pub fn certora_invariant_balances_not_negative_set_deposit(e: Env, claimant: Address, deposit_params: Map<BallotCategory, i128>) {    
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::set_deposit(e.clone(), deposit_params);
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_set_deposit(e: Env, deposit_params: Map<BallotCategory, i128>) {    
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::set_deposit(e.clone(), deposit_params);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_unlock(e: Env, claimant: Address, developer: Address, operators: Vec<Address>) {    
-    invariant_available_balance_not_negative(&e, &claimant, || {
+pub fn certora_invariant_balances_not_negative_unlock(e: Env, claimant: Address, developer: Address, operators: Vec<Address>) {    
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::unlock(e.clone(), developer, operators);
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_unlock(e: Env, developer: Address, operators: Vec<Address>) {    
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::unlock(e.clone(), developer, operators);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_available(e: Env, claimant: Address) {
-    invariant_available_balance_not_negative(&e, &claimant, || {
+pub fn certora_invariant_balances_not_negative_available(e: Env, claimant: Address) {
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::available(e.clone(), claimant.clone());
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_available(e: Env, claimant: Address) {
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::available(e.clone(), claimant.clone());
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_claim(e: Env, claimant: Address, to: Address, amount: i128) {
-    invariant_available_balance_not_negative(&e, &claimant, || {
+pub fn certora_invariant_balances_not_negative_claim(e: Env, claimant: Address, to: Address, amount: i128) {
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::claim(e.clone(), claimant.clone(), to, amount);
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_claim(e: Env, claimant: Address, to: Address, amount: i128) {
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::claim(e.clone(), claimant, to, amount);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_create_ballot(e: Env, claimant: Address, initiator: Address, category: BallotCategory) {
+pub fn certora_invariant_balances_not_negative_create_ballot(e: Env, claimant: Address, initiator: Address, category: BallotCategory) {
     let params = BallotInitParams {
         initiator,
         category,
         title: String::from_str(&e, "title"),
         description: String::from_str(&e, "description"),
     };
-    invariant_available_balance_not_negative(&e, &claimant, || {
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::create_ballot(e.clone(), params);
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_create_ballot(e: Env, initiator: Address, category: BallotCategory) {
-    let params = BallotInitParams {
-        initiator,
-        category,
-        title: String::from_str(&e, "title"),
-        description: String::from_str(&e, "description"),
-    };
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::create_ballot(e.clone(), params);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_get_ballot(e: Env, claimant: Address, ballot_id: u64) {
-    invariant_available_balance_not_negative(&e, &claimant, || {
+pub fn certora_invariant_balances_not_negative_get_ballot(e: Env, claimant: Address, ballot_id: u64) {
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::get_ballot(e.clone(), ballot_id);
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_get_ballot(e: Env, ballot_id: u64) {
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::get_ballot(e.clone(), ballot_id);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_retract_ballot(e: Env, claimant: Address, ballot_id: u64) {
-    invariant_available_balance_not_negative(&e, &claimant, || {
+pub fn certora_invariant_balances_not_negative_retract_ballot(e: Env, claimant: Address, ballot_id: u64) {
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::retract_ballot(e.clone(), ballot_id);
     });
 }
 
 #[rule]
-pub fn certora_invariant_dao_balance_not_negative_retract_ballot(e: Env, ballot_id: u64) {
-    invariant_dao_balance_not_negative(&e, || {
-        DAOContract::retract_ballot(e.clone(), ballot_id);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_available_balance_not_negative_vote(e: Env, claimant: Address, ballot_id: u64, accepted: bool) {
-    invariant_available_balance_not_negative(&e, &claimant, || {
-        DAOContract::vote(e.clone(), ballot_id, accepted);
-    });
-}
-
-#[rule]
-pub fn certora_invariant_dao_balance_not_negative_vote(e: Env, ballot_id: u64, accepted: bool) {
-    invariant_dao_balance_not_negative(&e, || {
+pub fn certora_invariant_balances_not_negative_vote(e: Env, claimant: Address, ballot_id: u64, accepted: bool) {
+    invariant_balances_not_negative(&e, &claimant, || {
         DAOContract::vote(e.clone(), ballot_id, accepted);
     });
 }
