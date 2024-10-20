@@ -276,6 +276,7 @@ impl DAOContract {
             _ => e.panic_with_error(Error::RefundUnavailable),
         };
         // refund tokens to the initiator address
+        #[cfg(feature = "cvt")]
         cvt::require!(refunded <= e.get_dao_balance(), "sufficient funds");
         token(&e).transfer(&e.current_contract_address(), &ballot.initiator, &refunded);
         // update remaining DAO balance
@@ -320,6 +321,7 @@ impl DAOContract {
             _ => e.panic_with_error(Error::BallotClosed),
         };
         // burn tokens from the deposit according to the decision
+        #[cfg(feature = "cvt")]
         cvt::require!(burn_amount <= e.get_dao_balance(), "sufficient funds");
         token(&e).burn(&e.current_contract_address(), &burn_amount);
         // update current DAO balance
