@@ -28,6 +28,14 @@ pub fn certora_config_can_only_be_called_once(
 }
 
 #[rule]
+pub fn certora_config_deposit_not_negative(env: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64, category: BallotCategory) {
+    let initial: Option<i128> = env.storage().instance().get(&category);
+    require!(initial.is_none(), "deposit initially unset");
+    DAOContract::config(env.clone(), ContractConfig { admin, token, amount, deposit_params, start_date });
+    assert!(env.get_deposit(category) >= 0);
+}
+
+#[rule]
 pub fn certora_create_ballot_sanity(e: Env, initiator: Address, category: BallotCategory, title: String, description: String) {
     let params = BallotInitParams { initiator, category, title, description };
     require!(is_auth(params.initiator.clone()), "authorized");
