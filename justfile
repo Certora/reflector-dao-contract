@@ -6,7 +6,7 @@ precise_bitwise_ops := "true"
 optimistic_loop := "true"
 
 build:
-    RUSTFLAGS="-C strip=none --emit=llvm-ir" cargo build --target=wasm32-unknown-unknown --release
+    RUSTFLAGS="-C strip=none --emit=llvm-ir" cargo build --target=wasm32-unknown-unknown --release --features cvt
 
 wat: build
     wasm2wat {{wasm}} -o contract.wat
