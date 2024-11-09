@@ -8,7 +8,7 @@ use types::{
 
 mod extensions;
 mod types;
-mod certora;
+mod certora_specs;
 
 // 0.24% weekly distribution
 const OPERATORS_SHARE: i128 = 24;
@@ -276,8 +276,8 @@ impl DAOContract {
             _ => e.panic_with_error(Error::RefundUnavailable),
         };
         // Check for sufficient balance, since the Prover doesn't yet model cross-contract calls.
-        #[cfg(feature = "cvt")]
-        cvt::require!(refunded <= e.get_dao_balance(), "sufficient funds");
+        #[cfg(feature = "certora")]
+        certora::require!(refunded <= e.get_dao_balance(), "sufficient funds");
         // refund tokens to the initiator address
         token(&e).transfer(&e.current_contract_address(), &ballot.initiator, &refunded);
         // update remaining DAO balance
@@ -322,8 +322,8 @@ impl DAOContract {
             _ => e.panic_with_error(Error::BallotClosed),
         };
         // Check for sufficient balance, since the Prover doesn't yet model cross-contract calls.
-        #[cfg(feature = "cvt")]
-        cvt::require!(burn_amount <= e.get_dao_balance(), "sufficient funds");
+        #[cfg(feature = "certora")]
+        certora::require!(burn_amount <= e.get_dao_balance(), "sufficient funds");
         // burn tokens from the deposit according to the decision
         token(&e).burn(&e.current_contract_address(), &burn_amount);
         // update current DAO balance

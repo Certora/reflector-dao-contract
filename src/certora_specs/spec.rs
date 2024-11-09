@@ -4,9 +4,9 @@ use crate::{DAOContract, BallotStatus, get_ballot};
 use crate::types::{
     ballot_category::BallotCategory, ballot_init_params::BallotInitParams, contract_config::ContractConfig
 };
-use cvt::{require, assert, satisfy};
-use cvt_soroban::{is_auth};
-use cvt_soroban_macros::*;
+use certora::{require, assert, satisfy};
+use certora_soroban::is_auth;
+use certora_soroban_macros::*;
 
 #[rule]
 pub fn certora_config_sanity(env: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {
